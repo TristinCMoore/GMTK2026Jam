@@ -41,4 +41,27 @@ public class CrosshairController : MonoBehaviour
     {
         moveDirection = inputValue.Get<Vector2>();
     }
+
+    private void OnJump(InputValue inputValue)
+    {
+        if (inputValue.isPressed)
+        {
+            // Check for button to press
+            Debug.Log("Jump button pressed, checking for button to activate.");
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector2.zero);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider.gameObject != gameObject)
+                {
+                    Debug.Log("Hit object: " + hit.collider.name);
+                    Button button = hit.collider.GetComponent<Button>();
+                    if (button != null)
+                    {
+                        button.buttonPressed();
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
